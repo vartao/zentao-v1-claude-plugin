@@ -178,7 +178,7 @@ async function parseResponse(response: Response): Promise<unknown> {
 }
 
 const client = new ZentaoClient();
-const server = new McpServer({ name: "zentao-v1-mcp", version: "0.8.5" });
+const server = new McpServer({ name: "zentao-v1-mcp", version: "0.8.7" });
 
 function jsonResult(value: unknown) {
   return { content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] };

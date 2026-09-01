@@ -73,7 +73,7 @@ C:\Users\你的用户名\.config\zentao-v1\credentials.json
 
 ## 从发布包安装
 
-解压 `zentao-v1-open-source-0.8.6.zip` 后执行：
+解压 `zentao-v1-open-source-0.8.7.zip` 后执行：
 
 ```bash
 claude plugin marketplace add <解压目录> --scope user

@@ -1,7 +1,7 @@
 ---
 name: zentao-v1
 description: Use the bundled zentao-v1 MCP for ZenTao 18.x REST API v1. Trigger for products, projects, executions, stories, requirements, tasks, effort records, bugs, todos, tests, docs, issues, risks, and connection checks.
-version: 0.8.6
+version: 0.8.7
 ---
 
 # ZenTao REST API v1

@@ -54,7 +54,7 @@ Credentials are saved per OS user at `~/.config/zentao-v1/credentials.json`. The
 
 ## Install From The Release Package
 
-Extract `zentao-v1-open-source-0.8.6.zip`, then run:
+Extract `zentao-v1-open-source-0.8.7.zip`, then run:
 
 ```text
 claude plugin marketplace add <extracted-folder> --scope user

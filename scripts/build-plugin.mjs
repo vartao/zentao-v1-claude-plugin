@@ -31,7 +31,7 @@ const marketplace = {
   plugins: [{
     name: "zentao-v1",
     description: "Fast and safe ZenTao REST API v1 tools with workflow guidance.",
-    version: "0.8.6",
+    version: "0.8.7",
     source: "./plugin",
     category: "productivity",
   }],

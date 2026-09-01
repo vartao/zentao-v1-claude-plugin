@@ -1,8 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.8.7 - 2026-09-01
 
-- Added Chinese and English uninstall instructions, legacy MCP registration cleanup, and credential removal.
+- Fixed PowerShell interactive setup: password entry no longer consumes the following confirmation input.
+- Masked password and API-token input with asterisks in the setup script.
+
+## Unreleased
 
 ## 0.8.6 - 2026-09-01
 

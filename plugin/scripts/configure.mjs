@@ -3,7 +3,6 @@ import { chmod, mkdir, rename, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
 
 const defaultConfigPath = resolve(homedir(), ".config", "zentao-v1", "credentials.json");
@@ -13,9 +12,9 @@ function arg(name) {
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
-async function hiddenQuestion(prompt) {
+async function question(prompt, { hidden = false } = {}) {
   if (!stdin.isTTY || typeof stdin.setRawMode !== "function") {
-    throw new Error("Hidden credential input requires an interactive terminal.");
+    throw new Error("Interactive setup requires a terminal.");
   }
   stdout.write(prompt);
   stdin.setRawMode(true);
@@ -42,10 +41,16 @@ async function hiddenQuestion(prompt) {
           return;
         }
         if (character === "\u007f" || character === "\b") {
-          value = value.slice(0, -1);
+          if (value) {
+            value = value.slice(0, -1);
+            stdout.write("\b \b");
+          }
           continue;
         }
-        if (character >= " ") value += character;
+        if (character >= " ") {
+          value += character;
+          stdout.write(hidden ? "*" : character);
+        }
       }
     };
     stdin.on("data", onData);
@@ -63,16 +68,14 @@ async function jsonRequest(url, options = {}) {
 }
 
 async function main() {
-  const rl = createInterface({ input: stdin, output: stdout });
-  try {
-    let baseUrl = arg("--url") ?? await rl.question("ZenTao base URL: ");
+  let baseUrl = arg("--url") ?? await question("ZenTao base URL: ");
     baseUrl = baseUrl.trim().replace(/\/+$/, "");
     let parsedUrl;
     try { parsedUrl = new URL(baseUrl); }
     catch { throw new Error("Enter a complete ZenTao http/https URL."); }
     if (!["http:", "https:"].includes(parsedUrl.protocol)) throw new Error("ZenTao URL must use http or https.");
 
-    const requestedMode = (arg("--auth") ?? await rl.question("Authentication method [password/token] (password): ")).trim().toLowerCase();
+    const requestedMode = (arg("--auth") ?? await question("Authentication method [password/token] (password): ")).trim().toLowerCase();
     const mode = requestedMode || "password";
     if (!["password", "token"].includes(mode)) throw new Error("Authentication method must be password or token.");
 
@@ -81,12 +84,12 @@ async function main() {
     let password;
     let savePassword = false;
     if (mode === "token") {
-      token = process.env.ZENTAO_SETUP_TOKEN ?? await hiddenQuestion("ZenTao API token (hidden): ");
+      token = process.env.ZENTAO_SETUP_TOKEN ?? await question("ZenTao API token (hidden): ", { hidden: true });
       if (!token) throw new Error("Token is required.");
     } else {
-      if (!account) account = (await rl.question("ZenTao account: ")).trim();
+      if (!account) account = (await question("ZenTao account: ")).trim();
       if (!account) throw new Error("Account is required.");
-      password = process.env.ZENTAO_SETUP_PASSWORD ?? await hiddenQuestion("ZenTao password (hidden): ");
+      password = process.env.ZENTAO_SETUP_PASSWORD ?? await question("ZenTao password (hidden): ", { hidden: true });
       if (!password) throw new Error("Password is required.");
       const login = await jsonRequest(`${baseUrl}/api.php/v1/tokens`, {
         method: "POST",
@@ -95,7 +98,7 @@ async function main() {
       });
       if (typeof login.token !== "string" || !login.token) throw new Error("ZenTao did not return an API token.");
       token = login.token;
-      const answer = (await rl.question("Save password for automatic token refresh? [y/N]: ")).trim().toLowerCase();
+      const answer = (await question("Save password for automatic token refresh? [y/N]: ")).trim().toLowerCase();
       savePassword = answer === "y" || answer === "yes";
     }
 
@@ -120,9 +123,6 @@ async function main() {
     stdout.write(`Configured successfully for ${realname || "the current user"}.\n`);
     stdout.write(`Credentials saved to ${configPath}. Fully restart Claude Code.\n`);
     if (!savePassword && mode === "password") stdout.write("The password was not saved. Re-run setup if the token expires.\n");
-  } finally {
-    rl.close();
-  }
 }
 
 main().catch((error) => {

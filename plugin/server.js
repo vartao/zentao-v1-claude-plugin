@@ -31431,7 +31431,7 @@ async function parseResponse(response) {
   }
 }
 var client = new ZentaoClient();
-var server = new McpServer({ name: "zentao-v1-mcp", version: "0.8.5" });
+var server = new McpServer({ name: "zentao-v1-mcp", version: "0.8.7" });
 function jsonResult(value) {
   return { content: [{ type: "text", text: JSON.stringify(value, null, 2) }] };
 }
