@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "zentao-v1-marketplace",
+  "description": "Open-source ZenTao REST API v1 integration for Claude Code",
+  "owner": {
+    "name": "vartao"
+  },
+  "plugins": [
+    {
+      "name": "zentao-v1",
+      "description": "Fast and safe ZenTao REST API v1 tools with workflow guidance.",
+      "version": "0.8.6",
+      "source": "./plugin",
+      "category": "productivity"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "zentao-v1-claude-plugin",
+  "version": "0.8.6",
+  "private": false,
+  "description": "Open-source Claude Code plugin and MCP server for ZenTao REST API v1",
+  "license": "MIT",
+  "author": "vartao",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vartao/zentao-v1-claude-plugin.git"
+  },
+  "homepage": "https://github.com/vartao/zentao-v1-claude-plugin#readme",
+  "bugs": "https://github.com/vartao/zentao-v1-claude-plugin/issues",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "zentao-v1-mcp": "dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:plugin": "node scripts/build-plugin.mjs",
+    "smoke:plugin": "node scripts/smoke-plugin.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test",
+    "dev": "tsx src/server.ts",
+    "configure": "node scripts/configure.mjs"
+  },
+  "engines": {
+    "node": ">=18.20"
+  },
+  "files": [
+    "dist/",
+    "plugin/",
+    "scripts/configure.mjs",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

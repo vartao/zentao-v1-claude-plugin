@@ -1,0 +1,10 @@
+{
+  "name": "zentao-v1",
+  "version": "0.8.6",
+  "description": "Open-source ZenTao REST API v1 integration with a bundled MCP server and workflow guidance for fast, safe operations.",
+  "author": {
+    "name": "vartao"
+  },
+  "repository": "https://github.com/vartao/zentao-v1-claude-plugin",
+  "license": "MIT"
+}
